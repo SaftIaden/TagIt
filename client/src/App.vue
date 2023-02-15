@@ -27,6 +27,7 @@ const toggleRightDrawer = () => (rightDrawerOpen.value = !rightDrawerOpen.value)
       <q-tabs align="left">
         <q-route-tab to="/" label="Home" />
         <q-route-tab to="/about" label="About" />
+
       </q-tabs>
     </q-header>
 
@@ -43,3 +44,13 @@ const toggleRightDrawer = () => (rightDrawerOpen.value = !rightDrawerOpen.value)
     </q-page-container>
   </q-layout>
 </template>
+
+<style>
+@font-face {
+  font-family: BlankRiver;
+  src: url('../fonts/Blank River.ttf');
+}
+q-toolbar-title {
+  font-family: BlankRiver;
+}
+</style>
