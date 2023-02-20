@@ -1,47 +1,68 @@
 <script setup>
 import { ref } from 'vue';
+import EssentialLink from '@/components/EssentialLinks.vue';
 
 const leftDrawerOpen = ref(false);
-const rightDrawerOpen = ref(false);
 
 const toggleLeftDrawer = () => (leftDrawerOpen.value = !leftDrawerOpen.value);
-const toggleRightDrawer = () => (rightDrawerOpen.value = !rightDrawerOpen.value);
+
+const linksListUserIcon = [
+  {
+    title: 'Account',
+    icon: 'account_circle',
+    link: '/',
+  },
+  {
+    title: 'Logout',
+    icon: 'logout',
+    link: '/login',
+  },
+];
 </script>
 
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-layout view="hHh lpr fFf">
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title>
+        <q-toolbar-title class="row justify-center">
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
+            <img src="/Logos/Main.svg" />
           </q-avatar>
-          Title
+          <p class="river">TagIt</p>
+          <q-avatar>
+            <img src="/Logos/Main.svg" />
+          </q-avatar>
         </q-toolbar-title>
 
-        <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
+        <q-avatar font-size="40px" text-color="white" icon="account_circle">
+          <q-menu transition-show="jump-down" transition-hide="jump-up">
+            <q-list style="min-width: 100px">
+              <EssentialLink
+                v-for="link in linksListUserIcon"
+                :key="link.title"
+                v-bind="link"
+              ></EssentialLink>
+            </q-list> </q-menu
+        ></q-avatar>
       </q-toolbar>
-
-      <q-tabs align="left">
-        <q-route-tab to="/" label="Home" />
-        <q-route-tab to="/about" label="About" />
-
-      </q-tabs>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" side="left" bordered>
       <!-- drawer content -->
     </q-drawer>
 
-    <q-drawer v-model="rightDrawerOpen" side="right" bordered>
-      <!-- drawer content -->
-    </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
+      <q-toolbar id="footer-toolbar" class="row justify-center q-gutter-md q-my-md fixed-bottom">
+        <q-btn size="32px" color="primary" flat square icon="image" @click="toggleLeftDrawer" />
+
+        <q-btn size="32px" color="primary" flat square icon="add" @click="toggleLeftDrawer" />
+
+        <q-btn size="32px" color="primary" flat square icon="search" @click="toggleLeftDrawer" />
+      </q-toolbar>
   </q-layout>
 </template>
 
@@ -50,7 +71,12 @@ const toggleRightDrawer = () => (rightDrawerOpen.value = !rightDrawerOpen.value)
   font-family: BlankRiver;
   src: url('../fonts/Blank River.ttf');
 }
-q-toolbar-title {
+.river {
   font-family: BlankRiver;
 }
+</style>
+
+<style scoped>
+
+
 </style>
