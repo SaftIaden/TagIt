@@ -12,3 +12,6 @@ Content-Type: application/json
 }
 ####
 Post http://localhost:3000/user/logout
+
+###
+Get http://localhost:3000/user/checkUser/mcorragan0

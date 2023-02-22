@@ -34,4 +34,11 @@ const album = new Schema({
 });
 const Album = model('album', album);
 
-export { User, Tag, Album };
+const tempUser = new Schema({
+  name: String,
+  email: String,
+  password: String,
+});
+const TempUser = model('tempUser', tempUser);
+
+export { User, Tag, Album, TempUser };

@@ -9,6 +9,14 @@ import manifest from './manifest';
 export default defineConfig({
   server: {
     port: 8080,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:3000',
+        secure: false,
+        changeOrigin: true,
+        rewrite: (path1) => path1.replace(/^\/api/, ''),
+      },
+    }
   },
   plugins: [
     vue({

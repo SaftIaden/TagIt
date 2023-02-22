@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable tag="a" target="_blank">
+  <q-item clickable tag="a" target="_blank" @click="linkClick()">
     <q-item-section v-if="icon" avatar>
       <q-icon size="30px" :name="icon" />
     </q-item-section>
@@ -14,7 +14,9 @@
 </template>
 
 <script setup>
-defineProps({
+import router from '../router/index.js'
+
+const props = defineProps({
   title: {
     type: String,
     required: true,
@@ -33,4 +35,8 @@ defineProps({
     default: null,
   },
 });
+
+const linkClick = () => {
+  router.push(props.link);
+};
 </script>
