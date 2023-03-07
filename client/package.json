@@ -12,6 +12,7 @@
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
     "@quasar/extras": "^1.15.5",
     "@studiometa/vue-mapbox-gl": "^2.0.4",
+    "@vueuse/core": "^9.13.0",
     "axios": "^1.2.2",
     "mapbox-gl": "^2.12.1",
     "pinia": "^2.0.23",

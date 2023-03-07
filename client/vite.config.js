@@ -16,6 +16,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path1) => path1.replace(/^\/api/, ''),
       },
+      '/images': {
+        target: 'http://127.0.0.1:3000/',
+        secure: false,
+        changeOrigin: true,
+      },
     }
   },
   plugins: [

@@ -20,6 +20,7 @@ const tag = new Schema({
   created: Date,
   updated: Date,
   favourite: { type: Boolean, default: false },
+  images: Array,
 });
 const Tag = model('tag', tag);
 

@@ -21,6 +21,7 @@ export const useUserStore = defineStore(
       user.value.email = email;
       user.value.profilePic = profilePic;
     }
+
     async function logout() {
       await axios.get('/api/logout');
       user.value.uid = '';

@@ -7,7 +7,7 @@ Content-Type: application/json
 
 
 {
-"email":"crosenthaler0@macromedia.com",
+"email":"kirnberger.t03@htlwienwest.at",
 "passwort":"12345"
 }
 ####
@@ -15,3 +15,16 @@ Post http://localhost:3000/user/logout
 
 ###
 Get http://localhost:3000/user/checkUser/mcorragan0
+
+####
+Get http://localhost:3000/tag/
+
+#####
+Post http://localhost:3000/tag/63f68ff60312a5a1229c109e
+Content-Type: application/json
+
+{
+  "updatedFields": {
+    "title": "Test23"
+  }
+}

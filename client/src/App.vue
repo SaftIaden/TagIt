@@ -56,13 +56,6 @@ const linksListUserIcon = [
     <q-page-container>
       <router-view />
     </q-page-container>
-      <q-toolbar id="footer-toolbar" class="row justify-center q-gutter-md q-my-md fixed-bottom">
-        <q-btn size="32px" color="primary" flat square icon="image" @click="toggleLeftDrawer" />
-
-        <q-btn size="32px" color="primary" flat square icon="add" @click="toggleLeftDrawer" />
-
-        <q-btn size="32px" color="primary" flat square icon="search" @click="toggleLeftDrawer" />
-      </q-toolbar>
   </q-layout>
 </template>
 
@@ -74,6 +67,7 @@ const linksListUserIcon = [
 .river {
   font-family: BlankRiver;
 }
+
 </style>
 
 <style scoped>

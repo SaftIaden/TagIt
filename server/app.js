@@ -6,6 +6,7 @@ import path from 'path';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import userRoute from './routes/user.js';
+import tagRoute from './routes/tags.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import connect from './db/connect.js';
 
@@ -40,6 +41,7 @@ app.use(express.static(path.join(dirname, '/public')));
 app.use(express.json());
 
 app.use('/user', userRoute);
+app.use('/tag', tagRoute);
 app.use(errorHandler);
 app.use(notFoundHandler);
 

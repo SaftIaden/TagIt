@@ -5,6 +5,7 @@ import { createPinia } from 'pinia';
 import '@quasar/extras/roboto-font/roboto-font.css';
 import '@quasar/extras/material-icons/material-icons.css';
 import quasarIconSet from 'quasar/icon-set/material-icons';
+import { Notify } from 'quasar';
 
 import 'quasar/src/css/index.sass';
 
@@ -16,7 +17,7 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(Quasar, {
-  plugins: {},
+  plugins: {Notify},
   iconSet: quasarIconSet,
 });
 
