@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import { MapboxMap, MapboxMarker, MapboxGeolocateControl } from '@studiometa/vue-mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import BigCardPopUP from '../components/BigCardPopUP.vue';
+import SearchPopUp from '../components/SearchPopUp.vue';
 import { useUserStore } from '@/stores/userStore.js';
 import { useTagStore } from '../stores/tagStore';
 
@@ -11,21 +12,18 @@ import MarkerCard from '../components/MarkerCard.vue';
 const userStore = useUserStore();
 const tagStore = useTagStore();
 
+const currentTag = ref(tagStore.tags[0]);
+
+const toggle = ref(false);
+const searchtoggle = ref(false);
+
+const changeTag = (e) => {
+  currentTag.value = e;
+  toggle.value = true;
+};
+
 const mbAccessToken = import.meta.env.VITE_MAPTOKEN;
 const mapboxMap = ref();
-
-const bigCardDialog = ref(false);
-const currentCard = ref({
-  id: 0,
-  title: "0",
-  description: "0",
-  images: [],
-});
-
-const openDialog = (tag) => {
-  currentCard.value = tag;
-  bigCardDialog.value = true;
-};
 
 let intervalMSconsumed = 0;
 const showLocationIntervall = setInterval(() => {
@@ -58,8 +56,11 @@ onMounted(() => {
       :key="tag.id"
       :lng-lat="[tag.coords.longitude, tag.coords.latitude]"
       :popup="{ closeButton: false, maxWidth: '300px' }"
-      ><template v-slot:popup style="width: 400px">
-        <MarkerCard @open-in-big="openDialog(tag)" :tag="tag" /> </template
+      ><template v-slot:popup>
+        <MarkerCard
+          :tag="tag"
+          @update:current-tag="changeTag($event)"
+        /> </template
     ></MapboxMarker>
   </MapboxMap>
   <q-toolbar id="footer-toolbar" class="row justify-center q-gutter-md q-my-md fixed-bottom">
@@ -67,8 +68,8 @@ onMounted(() => {
 
     <q-btn size="32px" color="primary" flat square icon="add" @click="toggleLeftDrawer" />
 
-    <q-btn size="32px" color="primary" flat square icon="search" @click="toggleLeftDrawer" />
+    <q-btn size="32px" color="primary" flat square icon="search" @click="searchtoggle = true" />
   </q-toolbar>
-  <BigCardPopUP v-model:toggle="bigCardDialog" :currentTag="currentCard"></BigCardPopUP>
-
+  <BigCardPopUP :currentTag="currentTag" v-model:toggle="toggle"></BigCardPopUP>
+  <SearchPopUp v-model:toggle="searchtoggle" @update:current-tag="changeTag($event)"></SearchPopUp>
 </template>

@@ -48,7 +48,6 @@ const linksListUserIcon = [
         ></q-avatar>
       </q-toolbar>
     </q-header>
-
     <q-drawer v-model="leftDrawerOpen" side="left" bordered>
       <!-- drawer content -->
     </q-drawer>
@@ -67,10 +66,6 @@ const linksListUserIcon = [
 .river {
   font-family: BlankRiver;
 }
-
 </style>
 
-<style scoped>
-
-
-</style>
+<style scoped></style>

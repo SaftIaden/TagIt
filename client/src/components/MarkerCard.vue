@@ -1,19 +1,30 @@
 <template>
-  <q-card class="my-card">
+  <q-card class="my-card" style="width: 250px">
     <q-btn
       class="fixed-top-left q-mt-md"
       text-color="primary"
       flat
       icon="open_in_full"
-      @click="$emit('openInBig')"
+      @click="openBigCard()"
       style="z-index: 1"
     ></q-btn>
     <q-btn
+      v-if="!tag.favourite"
       class="fixed-top-right q-mt-md"
       text-color="primary"
       flat
       icon="star_outline"
       style="z-index: 1"
+      @click="tagStore.favouriteTag(tag)"
+    ></q-btn>
+    <q-btn
+      v-if="tag.favourite"
+      class="fixed-top-right q-mt-md"
+      text-color="primary"
+      flat
+      icon="star"
+      style="z-index: 1"
+      @click="tagStore.favouriteTag(tag)"
     ></q-btn>
     <ImageCarousel :images="props.tag.images"></ImageCarousel>
     <q-card-section>
@@ -29,10 +40,19 @@
   </q-card>
 </template>
 <script setup>
+import { ref } from 'vue';
 import ImageCarousel from './ImageCarousel.vue';
+import { useTagStore } from '../stores/tagStore';
+
+const tagStore = useTagStore();
 
 const props = defineProps({
   tag: Object,
 });
-const emit = defineEmits(['openInBig']);
+const emit = defineEmits(['update:currentTag', 'opendBigDailog']);
+
+const openBigCard = () => {
+  emit("update:currentTag", props.tag);
+}
+
 </script>

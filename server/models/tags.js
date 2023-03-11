@@ -15,4 +15,17 @@ const dbUpdateTag = async (id, updatedFields) => {
   return res;
 };
 
-export { dbGetUserTags, dbUpdateTag };
+const dbDeleteTag = async (id) => {
+  await Tag.findOneAndDelete({ _id: { $eq: id } }, { returnOriginal: true });
+};
+
+const dbFindTag = async (id) => {
+  const res = await Tag.findOne({ _id: { $eq: id } });
+  return res;
+};
+
+const dbFavouriteTag = async (id, favourite) => {
+  await Tag.findOneAndUpdate({ _id: { $eq: id } }, { $set: { favourite }, updated: Date.now() });
+};
+
+export { dbGetUserTags, dbUpdateTag, dbDeleteTag, dbFindTag, dbFavouriteTag };

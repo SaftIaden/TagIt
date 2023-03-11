@@ -10,10 +10,10 @@
       <q-bar class="bg-primary text-white flex justify-center">
         <q-btn dense flat font-size="30px" icon="expand_more" v-close-popup> </q-btn>
       </q-bar>
-      <ImageCarousel :images="props.currentTag.images"></ImageCarousel>
+      <ImageCarousel :images="currentTag.images"></ImageCarousel>
       <q-card-section>
-        <p class="text-h3" style="font-family: BlankRiver">{{ props.currentTag.title }}</p>
-        <p>{{ props.currentTag.description }}</p>
+        <p class="text-h3" style="font-family: BlankRiver">{{ currentTag.title }}</p>
+        <p>{{ currentTag.description }}</p>
       </q-card-section>
       <q-card-section>
         <MapboxMap
@@ -33,7 +33,13 @@
       <q-card-section class="q-pt-none"> </q-card-section>
       <q-card-actions class="fixed-bottom q-pa-md" align="around">
         <q-btn class="bg-primary text-white" square rouded icon="edit" @click="startEdit()"></q-btn>
-        <q-btn class="bg-primary text-white" square rouded icon="delete"></q-btn>
+        <q-btn
+          class="bg-primary text-white"
+          square
+          rouded
+          icon="delete"
+          @click=" deleteDialog = true"
+        ></q-btn>
       </q-card-actions>
     </q-card>
 
@@ -61,15 +67,26 @@
           class="column no-wrap flex-center"
           :img-src="`/images/${image}`"
         >
+          <q-btn
+            class="absolute-top-right rouded bg-primary q-ma-md"
+            icon="delete"
+            style="z-index: 1"
+            @click="removeFromTag(image)"
+          ></q-btn>
         </q-carousel-slide>
         <q-carousel-slide
           v-for="(image, key) in addedImages"
           :key="key"
-          :name="key+images.length"
+          :name="key + images.length"
           class="column no-wrap flex-center"
           :img-src="image"
         >
-        q-btn
+          <q-btn
+            class="absolute-top-right rouded bg-primary q-ma-md"
+            icon="delete"
+            style="z-index: 1"
+            @click="removeFromAdded(image)"
+          ></q-btn>
         </q-carousel-slide>
       </q-carousel>
       <q-card-section>
@@ -81,7 +98,7 @@
           lable="Upload Image"
         />
         <q-input standout="bg-primary text-white" v-model="title" label="Title" />
-        <q-input standout="bg-primary text-white" v-model="descritption" label="description" />
+        <q-input standout="bg-primary text-white" v-model="description" label="description" />
       </q-card-section>
 
       <q-card-section class="q-pt-none">
@@ -90,7 +107,7 @@
           ref="mapboxMap"
           :access-token="mbAccessToken"
           map-style="mapbox://styles/tobiwankirnobi/cle5t3xjp001b01o4s7negt5k"
-          :center="[currentTag.coords.longitude, currentTag.coords.latitude]"
+          :center="[coords.longitude, coords.latitude]"
           :zoom="10"
         >
           <MapboxMarker
@@ -105,6 +122,30 @@
         <q-btn class="bg-primary text-white" square rouded icon="done" @click="update()"></q-btn>
       </q-card-actions>
     </q-card>
+  </q-dialog>
+  <q-dialog v-model="deleteDialog" persistent
+    ><q-card calss="q-ma-md">
+    <q-card-section>
+      <p class="text-h5">Willst du diesen Tag wirklich löschen?</p>
+      <p class="text-subtitle1">Titel: <span style="font-family: blankRiver">{{ currentTag.title }}</span></p>
+      <q-input
+        v-model="deleteConrimation"
+        label="Gib den Namen des Tags ein um zu bestätigen"
+      ></q-input>
+    </q-card-section>
+    <q-card-actions align="center">
+      <q-btn class="bg-primary text-white" icon="close" v-close-popup>
+      </q-btn>
+      <q-btn
+        class="bg-negative text-white"
+        :disable="!(deleteConrimation === currentTag.title)"
+        icon="delete"
+        @click="deleteTag()"
+      ></q-btn>
+
+    </q-card-actions>
+      </q-card
+    >
   </q-dialog>
 </template>
 <script setup>
@@ -121,12 +162,15 @@ const mbAccessToken = import.meta.env.VITE_MAPTOKEN;
 
 const file = ref();
 const addedImages = ref([]);
+const addedImagesBlobs = [];
 const slide = ref(0);
+const deleteDialog = ref(false);
+const deleteConrimation = ref('');
 
 const edit = ref(false);
 const title = ref();
 const images = ref([]);
-const descritption = ref();
+const description = ref();
 const coords = ref([]);
 
 const props = defineProps({
@@ -138,9 +182,12 @@ const dialogOpen = useVModel(props, 'toggle', emit);
 
 const resetEdit = () => {
   title.value = props.currentTag.title;
-  descritption.value = props.currentTag.description;
-  images.value = props.currentTag.images;
-  coords.value = props.currentTag.coords;
+  description.value = props.currentTag.description;
+  images.value = JSON.parse(JSON.stringify(props.currentTag.images));
+  coords.value.longitude = props.currentTag.coords.longitude;
+  coords.value.latitude = props.currentTag.coords.latitude;
+  addedImages.value.splice(0, addedImages.value.length);
+  addedImagesBlobs.splice(0, addedImagesBlobs.length);
 };
 
 const reset = () => {
@@ -160,23 +207,52 @@ const locationChnaged = (marker) => {
   coords.value.latitude = lat;
 };
 
-const update = () => {
+const update = async () => {
+  if (addedImages.value.length > 0) {
+    const data = await tagStore.uploadAddedImages(addedImagesBlobs);
+    data.forEach((el) => images.value.push(el.filename));
+  }
   const updatedFields = {};
   if (title.value !== props.currentTag.title) updatedFields.title = title.value;
-  if (descritption.value !== props.currentTag.description) {
-    updatedFields.description = title.description;
+  if (description.value !== props.currentTag.description) {
+    updatedFields.description = description.value;
   }
-  updatedFields.coords = coords.value;
-
-  if (images.value !== props.currentTag.images) updatedFields.images = images.value;
+  if (coords.value !== props.currentTag.coords) {
+    update;
+    updatedFields.coords = {
+      longitude: coords.value.longitude,
+      latitude: coords.value.latitude,
+    };
+  }
+  if (images.value !== JSON.parse(JSON.stringify(props.currentTag.images)))
+    updatedFields.images = images.value;
   tagStore.updateTag(props.currentTag, updatedFields);
   tagStore.getUserTags();
+  resetEdit();
   edit.value = !edit.value;
 };
 
 const addImage = (event) => {
   console.log(event);
   addedImages.value.push(URL.createObjectURL(event));
+  addedImagesBlobs.push(event);
   file.value = null;
 };
+
+const removeFromTag = (image) => {
+  const index = images.value.findIndex((el) => el === image);
+  images.value.splice(index, 1);
+};
+
+const removeFromAdded = (image) => {
+  const index = addedImages.value.findIndex((el) => el === image);
+  addedImages.value.splice(index, 1);
+  addedImagesBlobs.splice(index, 1);
+};
+
+const deleteTag = () => {
+  tagStore.deleteTag(props.currentTag);
+  tagStore.getUserTags();
+  emit('update:toggle', false);
+}
 </script>
