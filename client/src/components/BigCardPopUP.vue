@@ -236,6 +236,7 @@ const addImage = (event) => {
   console.log(event);
   addedImages.value.push(URL.createObjectURL(event));
   addedImagesBlobs.push(event);
+  console.log(event);
   file.value = null;
 };
 

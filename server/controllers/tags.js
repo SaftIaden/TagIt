@@ -4,6 +4,7 @@ import {
   dbDeleteTag,
   dbFindTag,
   dbFavouriteTag,
+  dbCreatetag,
 } from '../models/tags.js';
 import { uploadTagImage } from '../middleware/upload.js';
 
@@ -49,4 +50,12 @@ const favouriteTag = async (req, res) => {
   return res.status(200).send('success');
 };
 
-export { getUserTags, updateTag, uploadImage, deleteTag, favouriteTag };
+const createTag = async (req, res) => {
+  const { updatedFields } = req.body;
+  if (!req.session.userid) return res.status(401).send('Unauthorized');
+  console.log(updatedFields);
+  const data = await dbCreatetag(req.session.userid, updatedFields);
+  return res.status(200).json(data);
+};
+
+export { getUserTags, updateTag, uploadImage, deleteTag, favouriteTag, createTag };

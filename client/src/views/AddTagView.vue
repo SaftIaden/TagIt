@@ -37,19 +37,36 @@
     transition-hide="slide-down"
   >
     <q-card>
-    <q-card-section>
-      <q-input standout="bg-primary text-white" v-model="title" label="Title" />
-      <q-input standout="bg-primary text-white" v-model="description" label="description" />
-      <MapboxMap
-          style="height: 200px; width 400px"
-          ref="mapboxMap"
+      <q-card-section>
+        <q-input standout="bg-primary text-white" v-model="title" label="Title" />
+        <q-input standout="bg-primary text-white" v-model="description" label="description" />
+        <q-btn @click="useCurrentPosition()">Use Current postotion</q-btn>
+        <MapboxMap
+          style="height: 100px"
           :access-token="mbAccessToken"
           map-style="mapbox://styles/tobiwankirnobi/cle5t3xjp001b01o4s7negt5k"
           :center="[0, 0]"
           :zoom="10"
+          @mb-created="(map) => (mapboxMap = map)"
         >
+          <MapboxMarker
+            :lng-lat="[longitude, latitude]"
+            draggable
+            @mb-dragend="(e) => locationChnaged(e)"
+            @mb-created="(e) => (marker = e)"
+          ></MapboxMarker>
         </MapboxMap>
-    </q-card-section>
+      </q-card-section>
+      <q-card-actions align="center">
+        <q-btn
+          class="bg-primary text-white"
+          square
+          rouded
+          icon="close"
+          @click="closeDialog()"
+        ></q-btn>
+        <q-btn class="bg-primary text-white" square rouded icon="done" @click="addTag()"></q-btn>
+      </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
@@ -58,19 +75,24 @@
 import { ref, onMounted } from 'vue';
 import { MapboxMap, MapboxMarker } from '@studiometa/vue-mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { useTagStore } from '../stores/tagStore';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const tagStore = useTagStore();
 
 const mbAccessToken = import.meta.env.VITE_MAPTOKEN;
-
+const mapboxMap = ref();
+const marker = ref();
 
 const camera = ref();
 const titleDialog = ref(false);
 
 const title = ref('');
 const description = ref('');
-const longitude = ref();
-const latitude = ref();
-
-
+const longitude = ref(0);
+const latitude = ref(0);
 
 const availableCameras = [];
 let currentVideoSource;
@@ -89,6 +111,7 @@ async function takePhoto() {
       const blob = await canvas.convertToBlob();
       images.value.push(URL.createObjectURL(blob));
       imageBlobs.push(blob);
+      console.log(imageBlobs);
     })
     .catch((error) => {
       console.error('grabFrame() error: ', error);
@@ -151,19 +174,56 @@ const deleteImage = (image) => {
 };
 
 const openDialog = async () => {
-  navigator.geolocation.getCurrentPosition(updateCoords, geoError);
-  console.log(longitude.value)
   titleDialog.value = true;
 };
 
 const updateCoords = (pos) => {
   longitude.value = pos.coords.longitude;
   latitude.value = pos.coords.latitude;
-}
+  console.log(latitude.value);
+  console.log(mapboxMap.value);
+  mapboxMap.value.panTo([longitude.value, latitude.value]);
+};
 
 function geoError(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
+  longitude.value = 0;
+  latitude.value = 0;
 }
+
+const useCurrentPosition = async () => {
+  await navigator.geolocation.getCurrentPosition(updateCoords, geoError);
+  mapboxMap.value.flyTo({ center: [longitude.value, latitude.value], essential: true });
+};
+
+const locationChnaged = (e) => {
+  const { lng, lat } = e.target.getLngLat();
+  longitude.value = lng;
+  latitude.value = lat;
+};
+
+const closeDialog = () => {
+  title.value = '';
+  description.value = '';
+  titleDialog.value = false;
+};
+
+const addTag = async () => {
+  const newImages = [];
+  const data = await tagStore.uploadAddedImages(imageBlobs);
+  data.forEach((el) => newImages.push(el.filename));
+  const updatedFields = {
+    title: title.value,
+    description: description.value,
+    coords: {
+      longitude: longitude.value,
+      latitude: latitude.value,
+    },
+    images: newImages
+  };
+  await tagStore.createTag(updatedFields);
+  router.push('/');
+};
 
 onMounted(async () => {
   start();

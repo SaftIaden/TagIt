@@ -8,8 +8,10 @@ const imageStorage = multer.diskStorage({
     cb(null, path.join(dirname, '/public/images'));
   },
   filename(req, file, cb) {
+    console.log(file);
     const uniquePreffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${uniquePreffix}-${file.originalname}`);
+    const extension = file.mimetype.split('/');
+    cb(null, `${uniquePreffix}.${extension[extension.length - 1]}`);
   },
 });
 

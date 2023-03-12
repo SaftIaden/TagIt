@@ -28,4 +28,19 @@ const dbFavouriteTag = async (id, favourite) => {
   await Tag.findOneAndUpdate({ _id: { $eq: id } }, { $set: { favourite }, updated: Date.now() });
 };
 
-export { dbGetUserTags, dbUpdateTag, dbDeleteTag, dbFindTag, dbFavouriteTag };
+const dbCreatetag = async (uid, updatedFields) => {
+  const tag = await Tag.create(
+    {
+      uid,
+      title: updatedFields.title,
+      description: updatedFields.description,
+      images: updatedFields.images,
+      coords: updatedFields.coords,
+      created: Date.now(),
+      updated: Date.now(),
+    },
+  );
+  return tag;
+};
+
+export { dbGetUserTags, dbUpdateTag, dbDeleteTag, dbFindTag, dbFavouriteTag, dbCreatetag };

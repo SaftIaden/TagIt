@@ -48,12 +48,18 @@ export const useTagStore = defineStore(
       element.favourite = !element.favourite;
     }
 
+    async function createTag(updatedFields) {
+      await axios.post('/api/tag', { updatedFields });
+      getUserTags();
+    }
+
     return {
       getUserTags,
       updateTag,
       uploadAddedImages,
       deleteTag,
       favouriteTag,
+      createTag,
       tags,
       tagsGetter,
     };
