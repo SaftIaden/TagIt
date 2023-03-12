@@ -16,12 +16,22 @@ const router = createRouter({
       },
     },
     {
+      path: '/add',
+      name: 'Add Tag',
+      component: () => import('../views/AddTagView.vue')
+    },
+    {
       path: '/login',
       name: 'login',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/LoginRegister.vue'),
+      beforeEnter: (to, from, next) => {
+        const userStore = useUserStore();
+        if (userStore.isAuthenticated) next({ path: '/login' });
+        else next();
+      },
     },
     {
       path: '/logout',

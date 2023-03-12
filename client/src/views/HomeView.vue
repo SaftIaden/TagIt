@@ -6,11 +6,13 @@ import BigCardPopUP from '../components/BigCardPopUP.vue';
 import SearchPopUp from '../components/SearchPopUp.vue';
 import { useUserStore } from '@/stores/userStore.js';
 import { useTagStore } from '../stores/tagStore';
+import { useRouter } from 'vue-router';
 
 import MarkerCard from '../components/MarkerCard.vue';
 
 const userStore = useUserStore();
 const tagStore = useTagStore();
+const router = useRouter();
 
 const currentTag = ref(tagStore.tags[0]);
 
@@ -57,16 +59,13 @@ onMounted(() => {
       :lng-lat="[tag.coords.longitude, tag.coords.latitude]"
       :popup="{ closeButton: false, maxWidth: '300px' }"
       ><template v-slot:popup>
-        <MarkerCard
-          :tag="tag"
-          @update:current-tag="changeTag($event)"
-        /> </template
+        <MarkerCard :tag="tag" @update:current-tag="changeTag($event)" /> </template
     ></MapboxMarker>
   </MapboxMap>
   <q-toolbar id="footer-toolbar" class="row justify-center q-gutter-md q-my-md fixed-bottom">
     <q-btn size="32px" color="primary" flat square icon="image" @click="toggleLeftDrawer" />
 
-    <q-btn size="32px" color="primary" flat square icon="add" @click="toggleLeftDrawer" />
+    <q-btn size="32px" color="primary" flat square icon="add" @click="router.push({path: 'add'})" />
 
     <q-btn size="32px" color="primary" flat square icon="search" @click="searchtoggle = true" />
   </q-toolbar>
