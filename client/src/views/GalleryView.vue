@@ -19,6 +19,7 @@
       class="my-card col"
       style="max-width: 25rem; widht: 90vw"
       v-for="post in filteredList"
+      :key="post.id"
     >
       <q-responsive :ratio="9 / 16">
         <q-img
