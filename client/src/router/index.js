@@ -18,7 +18,12 @@ const router = createRouter({
     {
       path: '/add',
       name: 'Add Tag',
-      component: () => import('../views/AddTagView.vue')
+      component: () => import('../views/AddTagView.vue'),
+    },
+    {
+      path: '/gallery',
+      name: 'Gallery',
+      component: () => import('../views/GalleryView.vue'),
     },
     {
       path: '/login',
