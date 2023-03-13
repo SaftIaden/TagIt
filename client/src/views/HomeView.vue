@@ -63,7 +63,7 @@ onMounted(() => {
     ></MapboxMarker>
   </MapboxMap>
   <q-toolbar id="footer-toolbar" class="row justify-center q-gutter-md q-my-md fixed-bottom">
-    <q-btn size="32px" color="primary" flat square icon="image" @click="toggleLeftDrawer" />
+    <q-btn size="32px" color="primary" flat square icon="image" @click="router.push({path: 'albums'})" />
 
     <q-btn size="32px" color="primary" flat square icon="add" @click="router.push({path: 'add'})" />
 

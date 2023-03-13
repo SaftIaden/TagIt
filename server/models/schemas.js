@@ -28,7 +28,7 @@ const album = new Schema({
   uid: String,
   title: String,
   description: String,
-  pics: Array,
+  tags: Array,
   created: Date,
   updated: Date,
   favourite: { type: Boolean, default: false },

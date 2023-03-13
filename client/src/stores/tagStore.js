@@ -21,6 +21,7 @@ export const useTagStore = defineStore(
         updatedFields,
       });
       console.log(data);
+      
     }
 
     async function uploadAddedImages(images) {
