@@ -9,8 +9,14 @@
       <q-tab-panel name="login">
         <div
           class="q-pa-md"
-          style="max-width: 25rem; width: 90vw; min-height: 25rem"
+          style="max-width: 25rem; width: 90vw; min-height: 30rem"
         >
+          <div style="text-align: center">
+          <br/>
+            <p class="text-h5 text-primary">Welcomme back!</p>
+            <br />
+            <br />
+          </div>
           <q-form @submit="onSubmitLogin" @reset="onReset" class="q-gutter-xs">
             <q-input
               filled
@@ -56,7 +62,7 @@
       <q-tab-panel name="register">
         <div
           class="q-pa-md"
-          style="max-width: 25rem; width: 90vw; min-height: 25rem"
+          style="max-width: 25rem; width: 90vw; min-height: 30rem"
         >
           <q-form
             @submit="onSubmitRegister"
