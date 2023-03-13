@@ -5,15 +5,24 @@
   </q-tabs>
   <div class="flex flex-center" style="z-index: 1">
     <q-img src="/login.jpg" style="max-width: 25rem; border-radius: 1rem" />
-    <q-tab-panels v-model="tab" animated>
-      <q-tab-panel name="login">
+    <q-tab-panels v-model="tab" animated stlye="background: none !important">
+      <q-tab-panel name="login" stlye="background: none">
         <div
           class="q-pa-md"
-          style="max-width: 25rem; width: 90vw; min-height: 30rem"
+          style="max-width: 25rem; width: 90vw; min-height: 35rem"
         >
           <div style="text-align: center">
-          <br/>
-            <p class="text-h5 text-primary">Welcomme back!</p>
+            <br />
+            <p class="text-h5 text-primary">Willkommen zurück!</p>
+            <p>
+              Herzlich Willkommen bei TagIt! Unsere App ermöglicht es dir, die
+              Welt der Graffitis zu entdecken und zu teilen. Fotografiere
+              Graffitis, die dir gefallen, und lade sie hoch, um sie auf unserer
+              Karte zu markieren. So kannst du sehen, wo sich die besten
+              Streetart-Werke in deiner Umgebung befinden und sie mit anderen
+              teilen. Verbinde dich mit anderen Graffiti-Liebhabern und entdecke
+              neue Orte und Kunstwerke. Los geht's!
+            </p>
             <br />
             <br />
           </div>
@@ -59,10 +68,10 @@
           </q-form>
         </div>
       </q-tab-panel>
-      <q-tab-panel name="register">
+      <q-tab-panel name="register" stlye="background: none">
         <div
           class="q-pa-md"
-          style="max-width: 25rem; width: 90vw; min-height: 30rem"
+          style="max-width: 25rem; width: 90vw; min-height: 35rem"
         >
           <q-form
             @submit="onSubmitRegister"
@@ -143,11 +152,6 @@
       </q-tab-panel>
     </q-tab-panels>
   </div>
-  <q-img
-    src="/tibbw.png"
-    class="fixed-bottom"
-    style="z-index: -1; top: 30vh"
-  ></q-img>
 </template>
 
 <script setup>
