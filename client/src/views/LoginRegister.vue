@@ -3,11 +3,15 @@
     <q-tab name="login" label="LOGIN" />
     <q-tab name="register" label="REGISTER" />
   </q-tabs>
-  <div class="flex flex-center">
+  <div class="flex flex-center" style="z-index: 1">
+    <q-img src="/login.jpg" style="max-width: 25rem; border-radius: 1rem" />
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="login">
-        <div class="q-pa-md" style="max-width: 400px">
-          <q-form @submit="onSubmitLogin" @reset="onReset" class="q-gutter-md">
+        <div
+          class="q-pa-md"
+          style="max-width: 25rem; width: 90vw; min-height: 25rem"
+        >
+          <q-form @submit="onSubmitLogin" @reset="onReset" class="q-gutter-xs">
             <q-input
               filled
               type="string"
@@ -15,8 +19,11 @@
               label="Deine emailadresse *"
               lazy-rulese
               :rules="[
-                (val) => (val !== null && val !== '') || 'Bitte gib deine Emailaresse',
-                (val) => isValidEmail(val) || 'Bitte gib eine gültige Email Adresse an!',
+                (val) =>
+                  (val !== null && val !== '') || 'Bitte gib deine Emailaresse',
+                (val) =>
+                  isValidEmail(val) ||
+                  'Bitte gib eine gültige Email Adresse an!',
               ]"
             />
 
@@ -26,18 +33,35 @@
               v-model="inputPasswort"
               label="Dein Passwort"
               lazy-rules
-              :rules="[(val) => (val && val.length > 0) || 'Bitte gib ein Passwort ein!']"
+              :rules="[
+                (val) =>
+                  (val && val.length > 0) || 'Bitte gib ein Passwort ein!',
+              ]"
             />
 
             <div class="flex flex-center">
-              <q-btn label="Submit" type="submit" color="primary" />
+              <q-btn
+                rounded
+                label="Login"
+                type="submit"
+                color="primary"
+                size="1rem"
+                style="width: 80%"
+              />
             </div>
           </q-form>
         </div>
       </q-tab-panel>
       <q-tab-panel name="register">
-        <div class="q-pa-md" style="max-width: 400px">
-          <q-form @submit="onSubmitRegister" @reset="onReset" class="q-gutter-md">
+        <div
+          class="q-pa-md"
+          style="max-width: 25rem; width: 90vw; min-height: 25rem"
+        >
+          <q-form
+            @submit="onSubmitRegister"
+            @reset="onReset"
+            class="q-gutter-xs"
+          >
             <q-input
               filled
               type="string"
@@ -46,7 +70,9 @@
               lazy-rulese
               :rules="[
                 (val) => (val && val.length > 0) || 'Bitte gib ein Namen ein!',
-                async (val) => (await checkNameExists(val)) || 'Dieser Name ist schon vergeben',
+                async (val) =>
+                  (await checkNameExists(val)) ||
+                  'Dieser Name ist schon vergeben',
               ]"
             />
             <q-input
@@ -56,8 +82,11 @@
               label="Deine emailadresse *"
               lazy-rulese
               :rules="[
-                (val) => (val !== null && val !== '') || 'Bitte gib deine Emailaresse',
-                (val) => isValidEmail(val) || 'Bitte gib eine gültige Email Adresse an!',
+                (val) =>
+                  (val !== null && val !== '') || 'Bitte gib deine Emailaresse',
+                (val) =>
+                  isValidEmail(val) ||
+                  'Bitte gib eine gültige Email Adresse an!',
               ]"
             />
 
@@ -68,8 +97,11 @@
               label="Dein Passwort"
               lazy-rules
               :rules="[
-                (val) => (val && val.length > 0) || 'Bitte gib ein Passwort ein!',
-                (val) => val === inputPasswortCheck || 'Die Passwörter stimmen nicht überein',
+                (val) =>
+                  (val && val.length > 0) || 'Bitte gib ein Passwort ein!',
+                (val) =>
+                  val === inputPasswortCheck ||
+                  'Die Passwörter stimmen nicht überein',
               ]"
             />
 
@@ -80,19 +112,34 @@
               label="Dein Passwort"
               lazy-rules
               :rules="[
-                (val) => (val && val.length > 0) || 'Bitte gib ein Passwort ein!',
-                (val) => val === inputPasswort || 'Die Passwörter stimmen nicht überein',
+                (val) =>
+                  (val && val.length > 0) || 'Bitte gib ein Passwort ein!',
+                (val) =>
+                  val === inputPasswort ||
+                  'Die Passwörter stimmen nicht überein',
               ]"
             />
 
             <div class="flex flex-center">
-              <q-btn label="Submit" type="submit" color="primary" />
+              <q-btn
+                rounded
+                label="Register"
+                type="submit"
+                color="primary"
+                size="1rem"
+                style="width: 80%"
+              />
             </div>
           </q-form>
         </div>
       </q-tab-panel>
     </q-tab-panels>
   </div>
+  <q-img
+    src="/tibbw.png"
+    class="fixed-bottom"
+    style="z-index: -1; top: 30vh"
+  ></q-img>
 </template>
 
 <script setup>

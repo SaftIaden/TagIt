@@ -1,7 +1,10 @@
 <template>
-  <video ref="camera" autoplay style="width: 100%"></video>
+  <video ref="camera" autoplay style="width: 100%; height: 100%"></video>
   <div class="fixed-bottom q-gutter-md">
-    <div class="flex row no-wrap q-gutter-x-xs" style="height: 60px; overflow: scroll">
+    <div
+      class="flex row no-wrap q-gutter-x-xs"
+      style="height: 60px; overflow: scroll"
+    >
       <img
         v-for="(image, key) in images"
         :key="key"
@@ -12,7 +15,13 @@
       />
     </div>
     <div class="q-pa-md bg-black flex row justify-center q-gutter-x-lg">
-      <q-btn class="text-white" icon="autorenew" dense flat @click="changeCamera()"></q-btn>
+      <q-btn
+        class="text-white"
+        icon="autorenew"
+        dense
+        flat
+        @click="changeCamera()"
+      ></q-btn>
       <q-btn
         class="text-white"
         icon="radio_button_unchecked"
@@ -38,8 +47,16 @@
   >
     <q-card>
       <q-card-section>
-        <q-input standout="bg-primary text-white" v-model="title" label="Title" />
-        <q-input standout="bg-primary text-white" v-model="description" label="description" />
+        <q-input
+          standout="bg-primary text-white"
+          v-model="title"
+          label="Title"
+        />
+        <q-input
+          standout="bg-primary text-white"
+          v-model="description"
+          label="description"
+        />
         <q-btn @click="useCurrentPosition()">Use Current postotion</q-btn>
         <MapboxMap
           style="height: 100px"
@@ -65,7 +82,13 @@
           icon="close"
           @click="closeDialog()"
         ></q-btn>
-        <q-btn class="bg-primary text-white" square rouded icon="done" @click="addTag()"></q-btn>
+        <q-btn
+          class="bg-primary text-white"
+          square
+          rouded
+          icon="done"
+          @click="addTag()"
+        ></q-btn>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -129,7 +152,9 @@ const start = () => {
   }
 
   const constraints = {
-    video: { deviceId: currentVideoSource ? { exact: currentVideoSource } : undefined },
+    video: {
+      deviceId: currentVideoSource ? { exact: currentVideoSource } : undefined,
+    },
   };
   navigator.mediaDevices
     .getUserMedia(constraints)
@@ -157,12 +182,17 @@ function gotDevices(deviceInfos) {
 }
 
 function handleError(error) {
-  console.debug('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
+  console.debug(
+    'navigator.MediaDevices.getUserMedia error: ',
+    error.message,
+    error.name
+  );
 }
 
 const changeCamera = () => {
   const index = availableCameras.findIndex((el) => el === currentVideoSource);
-  if (availableCameras[index + 1] !== undefined) currentVideoSource = availableCameras[index + 1];
+  if (availableCameras[index + 1] !== undefined)
+    currentVideoSource = availableCameras[index + 1];
   else currentVideoSource = availableCameras[0];
   start();
 };
@@ -193,7 +223,10 @@ function geoError(err) {
 
 const useCurrentPosition = async () => {
   await navigator.geolocation.getCurrentPosition(updateCoords, geoError);
-  mapboxMap.value.flyTo({ center: [longitude.value, latitude.value], essential: true });
+  mapboxMap.value.flyTo({
+    center: [longitude.value, latitude.value],
+    essential: true,
+  });
 };
 
 const locationChnaged = (e) => {
@@ -219,7 +252,7 @@ const addTag = async () => {
       longitude: longitude.value,
       latitude: latitude.value,
     },
-    images: newImages
+    images: newImages,
   };
   await tagStore.createTag(updatedFields);
   router.push('/');
