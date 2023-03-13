@@ -41,6 +41,7 @@
 
             <div class="flex flex-center">
               <q-btn
+                unelevated
                 rounded
                 label="Login"
                 type="submit"
@@ -122,6 +123,7 @@
 
             <div class="flex flex-center">
               <q-btn
+                unelevated
                 rounded
                 label="Register"
                 type="submit"
