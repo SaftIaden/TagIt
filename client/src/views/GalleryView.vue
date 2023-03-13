@@ -21,9 +21,7 @@
       :key="post.id"
     >
       <q-responsive :ratio="9 / 16">
-        <q-img
-          src="https://cdn.pixabay.com/photo/2023/02/10/13/44/gorilla-7780902_960_720.jpg"
-        >
+        <q-img :src="post.img">
           <div class="absolute-bottom text-center">
             <p class="text-h4">{{ post.title }}</p>
             <q-btn
