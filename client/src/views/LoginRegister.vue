@@ -3,11 +3,30 @@
     <q-tab name="login" label="LOGIN" />
     <q-tab name="register" label="REGISTER" />
   </q-tabs>
-  <div class="flex flex-center">
-    <q-tab-panels v-model="tab" animated>
-      <q-tab-panel name="login">
-        <div class="q-pa-md" style="max-width: 400px">
-          <q-form @submit="onSubmitLogin" @reset="onReset" class="q-gutter-md">
+  <div class="flex flex-center" style="z-index: 1">
+    <q-img src="/login.jpg" style="max-width: 25rem; border-radius: 1rem" />
+    <q-tab-panels v-model="tab" animated stlye="background: none !important">
+      <q-tab-panel name="login" stlye="background: none">
+        <div
+          class="q-pa-md"
+          style="max-width: 25rem; width: 90vw; min-height: 35rem"
+        >
+          <div style="text-align: center">
+            <br />
+            <p class="text-h5 text-primary">Willkommen zurück!</p>
+            <p>
+              Herzlich Willkommen bei TagIt! Unsere App ermöglicht es dir, die
+              Welt der Graffitis zu entdecken und zu teilen. Fotografiere
+              Graffitis, die dir gefallen, und lade sie hoch, um sie auf unserer
+              Karte zu markieren. So kannst du sehen, wo sich die besten
+              Streetart-Werke in deiner Umgebung befinden und sie mit anderen
+              teilen. Verbinde dich mit anderen Graffiti-Liebhabern und entdecke
+              neue Orte und Kunstwerke. Los geht's!
+            </p>
+            <br />
+            <br />
+          </div>
+          <q-form @submit="onSubmitLogin" @reset="onReset" class="q-gutter-xs">
             <q-input
               filled
               type="string"
@@ -15,8 +34,11 @@
               label="Deine emailadresse *"
               lazy-rulese
               :rules="[
-                (val) => (val !== null && val !== '') || 'Bitte gib deine Emailaresse',
-                (val) => isValidEmail(val) || 'Bitte gib eine gültige Email Adresse an!',
+                (val) =>
+                  (val !== null && val !== '') || 'Bitte gib deine Emailaresse',
+                (val) =>
+                  isValidEmail(val) ||
+                  'Bitte gib eine gültige Email Adresse an!',
               ]"
             />
 
@@ -26,18 +48,36 @@
               v-model="inputPasswort"
               label="Dein Passwort"
               lazy-rules
-              :rules="[(val) => (val && val.length > 0) || 'Bitte gib ein Passwort ein!']"
+              :rules="[
+                (val) =>
+                  (val && val.length > 0) || 'Bitte gib ein Passwort ein!',
+              ]"
             />
 
             <div class="flex flex-center">
-              <q-btn label="Submit" type="submit" color="primary" />
+              <q-btn
+                unelevated
+                rounded
+                label="Login"
+                type="submit"
+                color="primary"
+                size="1rem"
+                style="width: 80%"
+              />
             </div>
           </q-form>
         </div>
       </q-tab-panel>
-      <q-tab-panel name="register">
-        <div class="q-pa-md" style="max-width: 400px">
-          <q-form @submit="onSubmitRegister" @reset="onReset" class="q-gutter-md">
+      <q-tab-panel name="register" stlye="background: none">
+        <div
+          class="q-pa-md"
+          style="max-width: 25rem; width: 90vw; min-height: 35rem"
+        >
+          <q-form
+            @submit="onSubmitRegister"
+            @reset="onReset"
+            class="q-gutter-xs"
+          >
             <q-input
               filled
               type="string"
@@ -46,7 +86,9 @@
               lazy-rulese
               :rules="[
                 (val) => (val && val.length > 0) || 'Bitte gib ein Namen ein!',
-                async (val) => (await checkNameExists(val)) || 'Dieser Name ist schon vergeben',
+                async (val) =>
+                  (await checkNameExists(val)) ||
+                  'Dieser Name ist schon vergeben',
               ]"
             />
             <q-input
@@ -56,8 +98,11 @@
               label="Deine emailadresse *"
               lazy-rulese
               :rules="[
-                (val) => (val !== null && val !== '') || 'Bitte gib deine Emailaresse',
-                (val) => isValidEmail(val) || 'Bitte gib eine gültige Email Adresse an!',
+                (val) =>
+                  (val !== null && val !== '') || 'Bitte gib deine Emailaresse',
+                (val) =>
+                  isValidEmail(val) ||
+                  'Bitte gib eine gültige Email Adresse an!',
               ]"
             />
 
@@ -68,8 +113,11 @@
               label="Dein Passwort"
               lazy-rules
               :rules="[
-                (val) => (val && val.length > 0) || 'Bitte gib ein Passwort ein!',
-                (val) => val === inputPasswortCheck || 'Die Passwörter stimmen nicht überein',
+                (val) =>
+                  (val && val.length > 0) || 'Bitte gib ein Passwort ein!',
+                (val) =>
+                  val === inputPasswortCheck ||
+                  'Die Passwörter stimmen nicht überein',
               ]"
             />
 
@@ -80,13 +128,24 @@
               label="Dein Passwort"
               lazy-rules
               :rules="[
-                (val) => (val && val.length > 0) || 'Bitte gib ein Passwort ein!',
-                (val) => val === inputPasswort || 'Die Passwörter stimmen nicht überein',
+                (val) =>
+                  (val && val.length > 0) || 'Bitte gib ein Passwort ein!',
+                (val) =>
+                  val === inputPasswort ||
+                  'Die Passwörter stimmen nicht überein',
               ]"
             />
 
             <div class="flex flex-center">
-              <q-btn label="Submit" type="submit" color="primary" />
+              <q-btn
+                unelevated
+                rounded
+                label="Register"
+                type="submit"
+                color="primary"
+                size="1rem"
+                style="width: 80%"
+              />
             </div>
           </q-form>
         </div>

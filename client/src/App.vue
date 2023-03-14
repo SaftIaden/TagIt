@@ -98,18 +98,16 @@ onMounted(async () => {
 
 <template>
   <q-layout view="hHh lpr fFf">
-    <q-header elevated class="bg-primary text-white" height-hint="98">
+    <q-header
+      class="bg-primary text-white"
+      height-hint="98"
+      style="padding: 0.5rem"
+    >
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title class="row justify-center">
-          <q-avatar>
-            <img src="/Logos/Main.svg" />
-          </q-avatar>
-          <p class="river">TagIt</p>
-          <q-avatar>
-            <img src="/Logos/Main.svg" />
-          </q-avatar>
+          <img src="/Logos/Main.svg" style="max-width: 8rem" />
         </q-toolbar-title>
         <q-btn
           v-if="update"
