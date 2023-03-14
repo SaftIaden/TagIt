@@ -105,9 +105,8 @@ onMounted(async () => {
       style="padding: 0.5rem"
     >
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title class="row justify-center">
+        <q-toolbar-title class="row justify-start">
           <img src="/Logos/Main.svg" style="max-width: 8rem" />
         </q-toolbar-title>
         <q-btn
