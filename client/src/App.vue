@@ -5,7 +5,7 @@ import { onlineTest } from './utils/onlineTest.js';
 import { useQuasar } from 'quasar';
 import { useTagStore } from './stores/tagStore';
 import { useAlbumStore } from './stores/albumStore';
-import idb from 'idb';
+import {openDB} from 'idb';
 
 const $q = useQuasar();
 const tagStore = useTagStore();
@@ -64,6 +64,7 @@ onMounted(async () => {
   });
   window.addEventListener('offline', () => {
     isOnline.value = false;
+    navigator.vibrate(200);
     updateStoresNetwork(false);
     $q.notify({
       color: 'red-4',

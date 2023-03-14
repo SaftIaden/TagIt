@@ -36,25 +36,10 @@ export default defineConfig({
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'service-worker.js',
-      includeAssets: ['**/*.{js,css,html,jpg,ico,xml,svg,png,ttf,woff2}'],
+      includeAssets: ['**/*.{js,css,html,jpg,ico,xml,svg,png,ttf,woff2,woff}'],
       workbox: {
         mode: 'development',
-        runtimeCaching: [
-          {
-            urlPattern: new RegExp('https://fonts.'),
-            handler: 'ChacheFirst',
-            options: {
-              cacheName: 'icons',
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 60 * 60 * 24 * 30, // <== 30 day
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-        ],
+        globPatterns: ['**/*.{js,css,html,jpg,ico,xml,svg,png,ttf,woff2,woff}'],
       },
     }),
   ],

@@ -255,5 +255,6 @@ const deleteTag = () => {
   tagStore.deleteTag(props.currentTag);
   tagStore.getUserTags();
   emit('update:toggle', false);
+  deleteDialog.value = false;
 }
 </script>
