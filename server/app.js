@@ -18,7 +18,6 @@ const dirname = path.resolve();
 const app = express();
 
 app.use(morgan('dev'));
-app.use(helmet());
 
 app.use(
   session({
@@ -37,12 +36,13 @@ app.use(
   }),
 );
 
-app.use(express.static(path.join(dirname, '/public')));
+app.use(express.static(path.join(process.cwd(), '/client')));
+app.use(express.static(path.join(process.cwd(), '/public')));
 
 app.use(express.json());
-app.use('/user', userRoute);
-app.use('/tag', tagRoute);
-app.use('/album', albumRoute);
+app.use('/api/user', userRoute);
+app.use('/api/tag', tagRoute);
+app.use('/api/album', albumRoute);
 app.use(errorHandler);
 app.use(notFoundHandler);
 

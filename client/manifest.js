@@ -1,6 +1,6 @@
 export default {
-  name: 'Employees PWA Project',
-  short_name: 'employeesPWA',
+  name: 'TagIt',
+  short_name: 'TagIt',
   start_url: '/',
   display: 'standalone',
   background_color: '#ffffff',

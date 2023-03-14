@@ -1,6 +1,15 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import EssentialLink from '@/components/EssentialLinks.vue';
+import { onlineTest } from './utils/onlineTest.js';
+import { useQuasar } from 'quasar';
+import { useTagStore } from './stores/tagStore';
+import { useAlbumStore } from './stores/albumStore';
+import idb from 'idb';
+
+const $q = useQuasar();
+const tagStore = useTagStore();
+const albumStore = useAlbumStore();
 
 const leftDrawerOpen = ref(false);
 
@@ -18,6 +27,73 @@ const linksListUserIcon = [
     link: '/login',
   },
 ];
+
+const isOnline = ref(true);
+const update = ref(false);
+
+const updateStoresNetwork = (bool) => {
+  tagStore.updateOnline(bool);
+  albumStore.updateOnline(bool);
+}
+
+const onRestart = async () => {
+  isOnline.value = await onlineTest();
+  window.addEventListener('online', () => (isOnline.value = true));
+  window.addEventListener('offline', () => (isOnline.value = false));
+  const registration = await navigator.serviceWorker.getRegistration();
+  if (registration) registration.waiting?.postMessage({ type: 'SKIP_WAITING' });
+  window.location.reload();
+};
+
+onMounted(async () => {
+  if (!window.indexedDB) alert('IndexedDB is not available!');
+  await albumStore.createDB();
+  await tagStore.createDB();
+  isOnline.value = await onlineTest();
+  window.addEventListener('online', async () => {
+    isOnline.value = true;
+    updateStoresNetwork(true);
+    $q.notify({
+      color: 'green-4',
+      textColor: 'white',
+      icon: 'wifi',
+      message: 'Online',
+    });
+    await albumStore.sync();
+    await tagStore.sync();
+  });
+  window.addEventListener('offline', () => {
+    isOnline.value = false;
+    updateStoresNetwork(false);
+    $q.notify({
+      color: 'red-4',
+      textColor: 'white',
+      icon: 'wifi_off',
+      message: 'Offline',
+    });
+  });
+  const registration = await navigator.serviceWorker.getRegistration();
+  if (!registration) {
+    console.log('registration failed!');
+    return;
+  }
+  registration.addEventListener('updatefound', () => {
+    update.value = true;
+    $q.notify({
+      color: 'blue-4',
+      textColor: 'white',
+      icon: 'refresh',
+      message: 'An Update is available!',
+      position: 'top-right'
+    });
+  });
+  if (registration.waiting) {
+    update.value = true;
+  }
+  if (!window.indexedDB) alert('IndexedDB is not available!');
+  // if (!db) await openDataBase();
+  // if(isOnline.value == true) await synchronize();
+});
 </script>
 
 <template>
@@ -35,7 +111,14 @@ const linksListUserIcon = [
             <img src="/Logos/Main.svg" />
           </q-avatar>
         </q-toolbar-title>
-
+        <q-btn
+          v-if="update"
+          flat
+          class="text-white"
+          @click="onRestart"
+          size="20px"
+          icon="refresh"
+        ></q-btn>
         <q-avatar font-size="40px" text-color="white" icon="account_circle">
           <q-menu transition-show="jump-down" transition-hide="jump-up">
             <q-list style="min-width: 100px">
@@ -44,8 +127,11 @@ const linksListUserIcon = [
                 :key="link.title"
                 v-bind="link"
               ></EssentialLink>
-            </q-list> </q-menu
-        ></q-avatar>
+            </q-list>
+          </q-menu>
+          <q-badge floating color="red" rounded v-if="!isOnline" />
+          <q-badge floating color="green" rounded v-if="isOnline"
+        /></q-avatar>
       </q-toolbar>
     </q-header>
     <q-drawer v-model="leftDrawerOpen" side="left" bordered>

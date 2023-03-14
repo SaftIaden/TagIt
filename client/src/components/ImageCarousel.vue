@@ -18,6 +18,7 @@
       :name="key"
       class="column no-wrap flex-center"
       :img-src="`/images/${image}`"
+      img-alt="Images will show next time you are online!"
     >
     </q-carousel-slide>
   </q-carousel>

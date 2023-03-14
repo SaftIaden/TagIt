@@ -136,26 +136,6 @@
             style="z-index: 1"
             @click="edit()"
           ></q-btn>
-          <q-btn
-            v-if="!currentAlbum.favourite"
-            class="q-mt-md"
-            size="20px"
-            text-color="primary"
-            flat
-            icon="star_outline"
-            style="z-index: 1"
-            @click="albumStore.favouriteAlbum(currentAlbum)"
-          ></q-btn>
-          <q-btn
-            v-if="currentAlbum.favourite"
-            class="q-mt-md"
-            text-color="primary"
-            size="20px"
-            flat
-            icon="star"
-            style="z-index: 1"
-            @click="albumStore.favouriteAlbum(currentAlbum)"
-          ></q-btn>
         </div>
       </q-card-section>
       <q-card-section v-for="(tag, key) in currentAlbum.tags" :key="key">
@@ -278,7 +258,7 @@ const tagStore = useTagStore();
 const favouriteTagsIds = ref([]);
 const allTagIDs = ref([]);
 
-const albums = ref();
+const albums = ref([]);
 const currentAlbum = ref();
 const openImage = ref(false);
 const currentImage = ref();
