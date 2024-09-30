@@ -11,12 +11,7 @@ export default defineConfig({
     port: 8080,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:3000',
-        secure: false,
-        changeOrigin: true,
-      },
-      '/images': {
-        target: 'http://127.0.0.1:3000/',
+        target: 'http://127.0.0.1:5000',
         secure: false,
         changeOrigin: true,
       },
@@ -36,11 +31,7 @@ export default defineConfig({
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'service-worker.js',
-      includeAssets: ['**/*.{js,css,html,jpg,ico,xml,svg,png,ttf,woff2,woff}'],
-      workbox: {
-        mode: 'development',
-        globPatterns: ['**/*.{js,css,html,jpg,ico,xml,svg,png,ttf,woff2,woff}'],
-      },
+      includeAssets: ['**/*.{js,css,html,jpg,ico,xml,svg,png,ttf,woff}'],
     }),
   ],
   resolve: {

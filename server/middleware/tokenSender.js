@@ -42,7 +42,7 @@ const sendVerificationMail = (mail, token) => {
     text: `Hi! There, You have recently visited
              our website and entered your email.
              Please follow the given link to verify your email
-             http://localhost:3000/user/validateRegister/${token}
+             http://localhost:8080/verify?token=${token}
              Thanks`,
   };
 

@@ -6,7 +6,7 @@ export default {
   background_color: '#ffffff',
   lang: 'en',
   scope: '/',
-  theme_color: '##DD7230',
+  theme_color: '#ff735c',
   id: '/',
   icons: [
     { src: '/icons/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },

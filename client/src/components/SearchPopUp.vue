@@ -35,12 +35,12 @@
             </q-th>
           </q-tr>
         </template>
-        <template v-slot:body-cell-image="props">
-          <q-td :props="props">
-            <div>
-              <q-img @click="emit('update:currentTag',props.row)" :src="`/images/${props.row.images[0]}`" />
-            </div>
+        <template v-slot:body-cell-body-cell-actions="props">
+              <q-td :props="props">
+              <q-btn icon="mode_edit" @click="onEdit(props.row)"></q-btn>
+              <q-btn icon="delete" @click="onDelete(props.row)"></q-btn>
           </q-td>
+
         </template>
       </q-table>
     </q-card>

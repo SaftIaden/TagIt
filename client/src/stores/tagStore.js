@@ -15,32 +15,32 @@ const openDataBase = async () => {
 };
 
 export const useTagStore = defineStore(
-  'tagStore',
+  'projectStore',
   () => {
     // state
     const tags = ref([]);
+    const allProjects = ref([])
     let isOnline = true;
 
     // getters
     const tagsGetter = computed(() => toRaw(tags.value));
     // actions
     async function getUserTags() {
-      if (!isOnline) {
-        let data = await db.getAll('tags');
-        tags.value = data.filter((el) => !el.isDeleted);
-        return;
-      }
       try {
-        const { data } = await axios.get('/api/tag/');
+        const { data } = await axios.get('/api/project/');
         tags.value = data;
-        await db.clear('tags');
-        tags.value.forEach((e) => {
-          db.put('tags', toRaw(e));
-        });
       } catch (error) {
         console.error(error);
         isOnline = false;
-        getUserTags();
+      }
+    }
+    async function getAllProjects() {
+      try {
+        const { data } = await axios.get('/api/project/all');
+        allProjects.value = data;
+      } catch (error) {
+        console.error(error);
+        isOnline = false;
       }
     }
 
@@ -93,33 +93,20 @@ export const useTagStore = defineStore(
         console.log(data);
         return data;
       } catch (error) {
-        console.error(error);
+        console.error(error);tag
         isOnline = false;
         uploadAddedImages(images);
       }
     }
 
-    async function deleteTag(tag) {
-      if (!isOnline) {
-        const el = await db.get('tags', tag._id);
-        el.isDeleted = true;
-        await db.put('tags', toRaw(el));
-        tags.value.splice(
-          tags.value.findIndex((el) => el._id == tag._id),
-          1,
-        );
-        return;
-      }
+    async function deleteTag(projectName) {
       try {
-        await axios.delete(`/api/tag/${tag._id}`);
-        tags.value.splice(
-          tags.value.findIndex((el) => el._id == tag._id),
-          1,
-        );
-      } catch (error) {
+        await axios.delete(`/api/project/${projectName}`);
+        await getAllProjects();
+        await getUserTags();
+      }catch (error) {
         console.error(error);
         isOnline = false;
-        deleteTag(tag);
       }
     }
 
@@ -145,34 +132,13 @@ export const useTagStore = defineStore(
     }
 
     async function createTag(updatedFields) {
-      if (!isOnline) {
-        await db.put(
-          'tags',
-          toRaw({
-            _id: tags.value.length,
-            title: updatedFields.title,
-            description: updatedFields.description,
-            images: updatedFields.images,
-            coords: updatedFields.coords,
-            new: true,
-          }),
-        );
-        // albums.value.push({
-        //   _id: tags.value.length,
-        //   title: updatedFields.title,
-        //   description: updatedFields.description,
-        //   tags: updatedFields.tags,
-        // });
-        getUserTags();
-        return;
-      }
       try {
-        await axios.post('/api/tag', { updatedFields });
-        getUserTags();
+        await axios.post('/api/project', { updatedFields });
+        await getAllProjects();
+        await getUserTags();
       } catch (error) {
         console.error(error);
         isOnline = false;
-        createTag(updatedFields);
       }
     }
 
@@ -252,6 +218,7 @@ export const useTagStore = defineStore(
 
     return {
       getUserTags,
+      getAllProjects,
       updateTag,
       uploadAddedImages,
       deleteTag,
@@ -261,6 +228,7 @@ export const useTagStore = defineStore(
       createDB,
       sync,
       tags,
+      allProjects,
       tagsGetter,
     };
   },

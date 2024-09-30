@@ -50,6 +50,12 @@ const router = createRouter({
       path: '/verify/',
       name: 'verify',
       component: () => import('../views/VerifyRegestration.vue'),
+      props: true,
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('../views/AdminView.vue'),
     },
     {
       path: '/thankyou',

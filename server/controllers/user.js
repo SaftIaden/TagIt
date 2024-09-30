@@ -7,6 +7,8 @@ import {
   dbPostTempUser,
   dbMakeUserValid,
   dbCheckForUid,
+  dbChangeUserProjects,
+  dbChangeUserRole,
 } from '../models/user.js';
 import { validateLogin, validatorRegister } from '../middleware/validators.js';
 import { sendVerificationMail, tokenGenerator, validateToken } from '../middleware/tokenSender.js';
@@ -73,4 +75,35 @@ const validateRegister = async (req, res) => {
   res.redirect('http://localhost:8080/verify');
 };
 
-export { login, logout, getAllUsers, register, getUserName, validateRegister };
+const changeUserProjects = async (req, res) => {
+  const { username } = req.params;
+  const { updatedProjects } = req.body;
+  try {
+    const updatedUser = await dbChangeUserProjects(username, updatedProjects);
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+const changeUserRole = async (req, res) => {
+  const { username } = req.params;
+  const { updatedRole } = req.body;
+  try {
+    const updatedUser = await dbChangeUserRole(username, updatedRole);
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+export {
+  login,
+  logout,
+  getAllUsers,
+  register,
+  getUserName,
+  validateRegister,
+  changeUserProjects,
+  changeUserRole,
+};
